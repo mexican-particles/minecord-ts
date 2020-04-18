@@ -1,0 +1,13 @@
+version: '3.7'
+
+volumes:
+    logs:
+        driver: local
+
+services:
+    minecord:
+        build: .
+        ports:
+            - 25575:25575
+        volumes:
+            - .:/var/lib/minecord
