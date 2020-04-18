@@ -3,16 +3,16 @@
   "version": "0.0.25",
   "description": "Connects Discord and Minecraft Servers without any mods or plugins.",
   "main": "./lib/index.js",
-  "module": "./src/index.js",
+  "module": "src/index.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "bin": {
     "minecord": "./lib/index.js"
   },
   "scripts": {
-    "build": "babel src -d lib",
-    "watch": "babel src -d lib --watch",
+    "build": "babel src --extensions '.ts' --out-dir dist",
+    "watch": "babel src --extensions '.ts' --out-dir dist --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,16 +30,20 @@
   },
   "homepage": "https://github.com/node-link/minecord#readme",
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.3.1"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/node": "^13.13.0",
+    "prettier": "^2.0.4",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "chokidar": "^2.0.4",
-    "commander": "^2.19.0",
-    "discord.js": "^11.4.2",
-    "iconv-lite": "^0.4.24",
-    "modern-rcon": "^1.0.3"
+    "@babel/polyfill": "^7.8.7",
+    "chokidar": "^3.3.1",
+    "commander": "^5.0.0",
+    "discord.js": "^12.2.0",
+    "iconv-lite": "^0.5.1",
+    "rcon-ts": "^1.2.3"
   }
 }
