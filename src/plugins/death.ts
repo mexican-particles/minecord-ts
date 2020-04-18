@@ -1,3 +1,4 @@
+import Plugin from '../Plugin'
 const regexpArray = [
   /^(.*)\swas\sshot\sby\sarrow$/,
   /^(.*)\swas\sshot\sby\s(.*)$/,
@@ -55,11 +56,14 @@ const regexpArray = [
   /^(.*)\sdied$/,
 ]
 
-export default Plugin => new Plugin({
-  async minecraft ({causedAt, level, message, sendToDiscord}) {
-    if (causedAt !== 'Server thread' || level !== 'INFO') return
+export default new Plugin({
+  async minecraft({ causedAt, level, message, sendToDiscord }) {
+    if (causedAt !== 'Server thread' || level !== 'INFO') {
+      return
+    }
 
-    if (regexpArray.some(regexp => regexp.test(message)))
+    if (regexpArray.some((regexp) => regexp.test(message)))
       await sendToDiscord(message)
-  }
+  },
+  discord({}) {},
 })
