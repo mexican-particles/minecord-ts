@@ -1,7 +1,7 @@
 import Plugin from '../Plugin'
 
 export default new Plugin({
-  async discord({ message, sendToMinecraft, sendToDiscord }): Promise<void> {
+  async discord({ message, sendToDiscord }): Promise<void> {
     if (message['cleanContent'] !== '!ping') {
       return
     }

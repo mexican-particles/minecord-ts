@@ -1,24 +1,10 @@
-import Replacers from '../Replacers'
 import Plugin from '../Plugin'
-
-const replacers = new Replacers()
-  .add(
-    /^\[(.*):\sAdded\s(.*)\sto\sthe\swhitelist]$/,
-    (message, player, target) =>
-      `${player} が ${target} をホワイトリストに追加したみたい。`
-  )
-  .add(
-    /^\[(.*):\sRemoved\s(.*)\sfrom\sthe\swhitelist]$/,
-    (message, player, target) =>
-      `${player} が ${target} をホワイトリストから削除したみたい。`
-  )
+import { sendToMinecraftWithRegexRepDic } from '../pluginHelper'
+import { whiteListRegexJa } from './dictionaries/whiteListRegexJa'
 
 export default new Plugin({
-  async minecraft({ causedAt, level, message, sendToDiscord }) {
-    if (causedAt !== 'Server thread' || level !== 'INFO') return
-
-    const newMessage = replacers.replace(message)
-    if (newMessage !== false) await sendToDiscord(newMessage)
+  async minecraft(args) {
+    await sendToMinecraftWithRegexRepDic(args, whiteListRegexJa)
   },
   discord({}) {},
 })

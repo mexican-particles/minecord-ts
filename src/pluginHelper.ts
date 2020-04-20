@@ -2,13 +2,12 @@ import { ClientUser, Message } from 'discord.js'
 import Rcon from 'rcon-ts'
 import config from './config'
 import Plugin from './Plugin'
+import MinecraftLogLine from './MinecraftLogLine'
+import Replacers from './Replacers'
+import { RegexDic, RegexRepDic } from './plugins/dictionaries/types'
 
 type ToMinecraftArgs = {
-  log: string
-  time: string
-  causedAt: string
-  level: string
-  message: string
+  logLine: MinecraftLogLine
   channel: Message['channel']
   user: ClientUser | null
   sendToDiscord: (
@@ -43,7 +42,6 @@ export const loadPlugins = (pluginNames: string[] = []): Plugin[] => {
 
   pluginNames.map((pluginName: string) => {
     let plugin: Plugin | null = null
-    let error = null
 
     try {
       if (pluginsDir) plugin = require(`${pluginsDir}/${pluginName}`).default
@@ -66,4 +64,33 @@ export const loadPlugins = (pluginNames: string[] = []): Plugin[] => {
   })
 
   return plugins
+}
+
+export const sendToMinecraftWithRegexDic = async (
+  { logLine, sendToDiscord }: ToMinecraftArgs,
+  regexDic: RegexDic
+): Promise<void> => {
+  if (!logLine.isServerInfoMessage()) {
+    return
+  }
+
+  if (Object.values(regexDic).some((regexp) => regexp.test(logLine.message))) {
+    await sendToDiscord(logLine.message)
+  }
+}
+
+export const sendToMinecraftWithRegexRepDic = async (
+  { logLine, sendToDiscord }: ToMinecraftArgs,
+  regexRepDic: RegexRepDic
+): Promise<void> => {
+  if (!logLine.isServerInfoMessage()) {
+    return
+  }
+  const newMessage = new Replacers()
+    .addDic(regexRepDic)
+    .replace(logLine.message)
+
+  if (newMessage !== false) {
+    await sendToDiscord(newMessage)
+  }
 }

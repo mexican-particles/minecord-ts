@@ -7,6 +7,7 @@ import Rcon from 'rcon-ts'
 import Tail from './Tail'
 import { loadPlugins } from './pluginHelper'
 import Plugin from './Plugin'
+import MinecraftLogLine from './MinecraftLogLine'
 
 const {
   enable,
@@ -20,7 +21,7 @@ const {
   encode,
 } = config()
 
-process.stdout.write('Starting Minecord ... ')
+console.log('Minecord を開始しています ...')
 
 const client: Client = new Client()
 let clientChannel: Channel
@@ -28,7 +29,7 @@ client.on(
   'ready',
   async (): Promise<void> => {
     clientChannel = await client.channels.fetch(discordChannel)
-    console.log('Done!!')
+    console.log('準備が完了しました')
   }
 )
 
@@ -91,7 +92,7 @@ tail.on('line', async (line: string) => {
     return
   }
 
-  const [log, time, causedAt, level, message]: RegExpExecArray = regExpExecArray
+  const minecraftLogLine = new MinecraftLogLine(regExpExecArray)
   const fetchedChannel: Channel = await client.channels.fetch(discordChannel)
   const canHandle = (ch: any): ch is TextChannel | DMChannel => {
     return ch instanceof TextChannel || ch instanceof DMChannel
@@ -102,19 +103,13 @@ tail.on('line', async (line: string) => {
     })
     return
   }
-  console.log('Discord のチャンネルを読み込みました', {
-    fetchedChannel,
-  })
+  console.log('Discord のチャンネルを読み込みました')
   const fetchedMessage: Message = new Message(client, {}, fetchedChannel)
 
   await Promise.all(
     plugins.map(({ minecraft }: Plugin) =>
       minecraft({
-        log,
-        time,
-        causedAt,
-        level,
-        message,
+        logLine: minecraftLogLine,
         channel: fetchedMessage.channel,
         user: client.user,
         sendToDiscord: (...args: Parameters<Message['channel']['send']>) =>

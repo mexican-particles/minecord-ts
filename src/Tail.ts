@@ -21,7 +21,9 @@ export default class Tail extends EventEmitter {
   }
 
   watch(): void {
-    if (this.watcher) return
+    if (this.watcher === null) {
+      return
+    }
 
     const stats = this.getStats()
     if (stats) this.position = stats.size
@@ -49,9 +51,11 @@ export default class Tail extends EventEmitter {
       })
   }
 
-  unwatch(): void {
-    if (!this.watcher) return
-    this.watcher.close()
+  async unwatch(): Promise<void> {
+    if (this.watcher === null) {
+      return
+    }
+    await this.watcher.close()
     this.watcher = null
   }
 

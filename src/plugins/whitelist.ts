@@ -1,16 +1,10 @@
 import Plugin from '../Plugin'
-
-const regexpArray = [
-  /^\[(.*):\sAdded\s(.*)\sto\sthe\swhitelist]$/,
-  /^\[(.*):\sRemoved\s(.*)\sfrom\sthe\swhitelist]$/,
-]
+import { sendToMinecraftWithRegexDic } from '../pluginHelper'
+import { whiteListRegex } from './dictionaries/whiteListRegex'
 
 export default new Plugin({
-  async minecraft({ causedAt, level, message, sendToDiscord }) {
-    if (causedAt !== 'Server thread' || level !== 'INFO') return
-
-    if (regexpArray.some((regexp) => regexp.test(message)))
-      await sendToDiscord(message)
+  async minecraft(args) {
+    await sendToMinecraftWithRegexDic(args, whiteListRegex)
   },
   discord({}) {},
 })
