@@ -1,6 +1,9 @@
 import Plugin from '../Plugin'
 
-const regexpArray = [/^(.*)\sjoined\sthe\sgame$/, /^(.*)\sleft\sthe\sgame$/]
+const regexpArray = [
+  /^([\w\d_]+)\[.*] logged\sin\swith\sentity\sid\s\w+\sat\s\(.*\).*$/,
+  /^(.*)\sleft\sthe\sgame$/,
+]
 
 export default new Plugin({
   async minecraft({ causedAt, level, message, sendToDiscord }) {

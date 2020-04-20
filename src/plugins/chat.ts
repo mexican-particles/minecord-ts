@@ -7,6 +7,9 @@ const replacers: Replacers = new Replacers()
 
 export default new Plugin({
   async discord({ message, sendToMinecraft }): Promise<void> {
+    if (message['cleanContent'].startsWith('!')) {
+      return
+    }
     const text: string = `<${
       (message['member'] && message['member']['nickname']) ||
       message['author']['username']
@@ -18,8 +21,8 @@ export default new Plugin({
     if (
       (causedAt.indexOf('Server thread') === -1 &&
         causedAt.indexOf('Async Chat Thread') === -1) ||
-      level !== 'INFO' ||
-      message.indexOf('mute') !== -1
+      message.indexOf('mute') !== -1 ||
+      level !== 'INFO'
     ) {
       return
     }

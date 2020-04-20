@@ -1,10 +1,8 @@
 {
   "pluginsDir": null,
-  "enable": [
-    "chat"
-  ],
+  "enable": ["chat"],
   "disable": [],
-  "minecraftLog": "/var/minecraft/logs/latest.log",
+  "minecraftLog": "/var/logs/minecraft/latest.log",
   "minecraftRconHost": "localhost",
   "minecraftRconPort": 25575,
   "minecraftRconPassword": "secret",

@@ -43,6 +43,7 @@ export const loadPlugins = (pluginNames: string[] = []): Plugin[] => {
 
   pluginNames.map((pluginName: string) => {
     let plugin: Plugin | null = null
+    let error = null
 
     try {
       if (pluginsDir) plugin = require(`${pluginsDir}/${pluginName}`).default
@@ -56,7 +57,12 @@ export const loadPlugins = (pluginNames: string[] = []): Plugin[] => {
       if (!plugin) plugin = require(`./plugins/${pluginName}`).default
     } catch (e) {}
 
-    if (plugin) plugins.push(plugin)
+    if (plugin) {
+      plugins.push(plugin)
+      console.log(`${pluginName} を読み込みました`)
+    } else {
+      console.log(`${pluginName} は読み込めませんでした`)
+    }
   })
 
   return plugins

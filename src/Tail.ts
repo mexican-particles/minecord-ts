@@ -57,8 +57,10 @@ export default class Tail extends EventEmitter {
 
   private getStats(): Stats | false {
     try {
+      console.log(`${this.filename} を読み込みました`)
       return statSync(this.filename)
     } catch (e) {
+      console.log(`${this.filename} を読み込めませんでした。権限の問題かも？`)
       return false
     }
   }

@@ -3,7 +3,7 @@ import Plugin from '../Plugin'
 
 const replacers = new Replacers()
   .add(
-    /^(.*)\sjoined\sthe\sgame$/,
+    /^([\w\d_]+)\[.*] logged\sin\swith\sentity\sid\s\w+\sat\s\(.*\).*$/,
     (message, player) => `${player} がログインしたみたい。`
   )
   .add(

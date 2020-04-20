@@ -54,11 +54,14 @@ client.on(
       return
     }
     if (message.author.bot || message.author.id === client.user?.id) {
-      console.log('クライアント、メッセージそれぞれから取得したユーザIDが一致しません', {
-        messageAuthorBot: message.author.bot,
-        messageAuthorId: message.author.id,
-        clientUserId: client.user?.id,
-      })
+      console.log(
+        'クライアント、メッセージそれぞれから取得したユーザIDが一致しません',
+        {
+          messageAuthorBot: message.author.bot,
+          messageAuthorId: message.author.id,
+          clientUserId: client.user?.id,
+        }
+      )
       return
     }
 
@@ -99,6 +102,9 @@ tail.on('line', async (line: string) => {
     })
     return
   }
+  console.log('Discord のチャンネルを読み込みました', {
+    fetchedChannel,
+  })
   const fetchedMessage: Message = new Message(client, {}, fetchedChannel)
 
   await Promise.all(
