@@ -1,6 +1,6 @@
 import Plugin from '../Plugin'
 import { chatRegexRepDic } from './dictionaries/chatRegex'
-import { sendToMinecraftWithRegexRepDic } from '../pluginHelper'
+import Replacers from '../Replacers'
 
 export default new Plugin({
   async discord({ message, sendToMinecraft }): Promise<void> {
@@ -13,10 +13,16 @@ export default new Plugin({
     await sendToMinecraft(`tellraw @a ${JSON.stringify({ text: text })}`)
   },
 
-  async minecraft(args): Promise<void> {
-    if (!args.logLine.isUnmutedChatMessage()) {
+  async minecraft({logLine, sendToDiscord} ): Promise<void> {
+    if (!logLine.isUnmutedChatMessage()) {
       return
     }
-    await sendToMinecraftWithRegexRepDic(args, chatRegexRepDic)
+    const newMessage = new Replacers()
+      .addDic(chatRegexRepDic)
+      .replace(logLine.message)
+
+    if (newMessage !== false) {
+      await sendToDiscord(newMessage)
+    }
   },
 })

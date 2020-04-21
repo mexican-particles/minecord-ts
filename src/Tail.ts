@@ -21,7 +21,7 @@ export default class Tail extends EventEmitter {
   }
 
   watch(): void {
-    if (this.watcher === null) {
+    if (this.watcher) {
       return
     }
 
