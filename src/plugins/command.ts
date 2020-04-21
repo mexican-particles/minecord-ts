@@ -4,22 +4,25 @@ import { sendToMinecraftWithRegexRepDic } from '../pluginHelper'
 
 export default new Plugin({
   async discord({ message, sendToMinecraft, sendToDiscord }): Promise<void> {
-    const command: string = message.cleanContent
+    await message.cleanContent.split(/\r?\n/g).map(
+      async (command: string): Promise<void> => {
+        const trimmed: string = command.trim()
+        if (!trimmed.startsWith('!') || trimmed === '!ping') {
+          return
+        }
 
-    if (!command.startsWith('!') || command === '!ping') {
-      return
-    }
+        for (const key in cmdRegex) {
+          if (cmdRegex.hasOwnProperty(key) && cmdRegex[key].test(trimmed)) {
+            console.log(`コマンド ${trimmed} を実行します`)
+            await sendToMinecraft(trimmed.slice(1))
+            return
+          }
+        }
 
-    for (const key in cmdRegex) {
-      if (cmdRegex.hasOwnProperty(key) && cmdRegex[key].test(command)) {
-        console.log(`コマンド ${command} を実行します`)
-        await sendToMinecraft(command.slice(1))
-        return
+        await sendToDiscord(
+          `コマンド ${trimmed} は実行可能リストに定義されていません`
+        )
       }
-    }
-
-    await sendToDiscord(
-      `コマンド ${command} は実行可能リストに定義されていません`
     )
   },
 
