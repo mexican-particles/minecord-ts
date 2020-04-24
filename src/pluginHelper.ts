@@ -1,4 +1,4 @@
-import { ClientUser, Message } from 'discord.js'
+import { Client, ClientUser, Message } from 'discord.js'
 import Rcon from 'rcon-ts'
 import config from './config'
 import Plugin from './Plugin'
@@ -6,10 +6,10 @@ import MinecraftLogLine from './MinecraftLogLine'
 import Replacers from './Replacers'
 import { RegexDic, RegexRepDic } from './plugins/dictionaries/types'
 
-type ToMinecraftArgs = {
+type MinecraftArgs = {
   logLine: MinecraftLogLine
   channel: Message['channel']
-  user: ClientUser | null
+  user: Client['user']
   sendToDiscord: (
     ...args: Parameters<Message['channel']['send']>
   ) => Promise<Message>
@@ -18,10 +18,9 @@ type ToMinecraftArgs = {
   ) => ReturnType<Rcon['send']>
 }
 
-type ToDiscordArgs = {
+type DiscordArgs = {
   message: Message
-  channel: Message['channel']
-  user: ClientUser | null
+  user: Client['user']
   sendToDiscord: (
     ...args: Parameters<Message['channel']['send']>
   ) => Promise<Message>
@@ -31,8 +30,8 @@ type ToDiscordArgs = {
 }
 
 export type PluginArgs = {
-  discord: (arg: ToDiscordArgs) => void
-  minecraft: (arg: ToMinecraftArgs) => void
+  discord: (arg: DiscordArgs) => void
+  minecraft: (arg: MinecraftArgs) => void
 }
 
 export const loadPlugins = (pluginNames: string[] = []): Plugin[] => {
@@ -67,7 +66,7 @@ export const loadPlugins = (pluginNames: string[] = []): Plugin[] => {
 }
 
 export const sendToMinecraftWithRegexDic = async (
-  { logLine, sendToDiscord }: ToMinecraftArgs,
+  { logLine, sendToDiscord }: MinecraftArgs,
   regexDic: RegexDic
 ): Promise<void> => {
   if (!logLine.isServerInfoMessage()) {
@@ -80,7 +79,7 @@ export const sendToMinecraftWithRegexDic = async (
 }
 
 export const sendToMinecraftWithRegexRepDic = async (
-  { logLine, sendToDiscord }: ToMinecraftArgs,
+  { logLine, sendToDiscord }: MinecraftArgs,
   regexRepDic: RegexRepDic
 ): Promise<void> => {
   if (!logLine.isServerInfoMessage()) {

@@ -3,6 +3,7 @@ import { RegexDic, RegexRepDic } from './types'
 export const cmdRegex: RegexDic = {
   weather: /^\!weather\s+(clear|rain|thunder)$/,
   timeSet: /^\!time\s+set\s+(day|night)$/,
+  timeAdd: /^\!time\s+add\s+\w+$/,
 }
 
 export const cmdRegexRepDic: RegexRepDic = {

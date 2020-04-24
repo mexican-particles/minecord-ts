@@ -25,9 +25,12 @@ export default class Tail extends EventEmitter {
       return
     }
 
-    const stats = this.getStats()
-    if (stats) this.position = stats.size
+    const stats: Stats | null = this.getStats()
+    if (stats === null) {
+      return
+    }
 
+    this.position = stats.size
     this.watcher = watch(dirname(this.filename), {
       ignoreInitial: true,
       alwaysStat: true,
@@ -59,13 +62,16 @@ export default class Tail extends EventEmitter {
     this.watcher = null
   }
 
-  private getStats(): Stats | false {
+  private getStats(): Stats | null {
     try {
       console.log(`${this.filename} を読み込みました`)
       return statSync(this.filename)
-    } catch (e) {
-      console.log(`${this.filename} を読み込めませんでした。権限の問題かも？`)
-      return false
+    } catch (err) {
+      console.log(
+        `${this.filename} を読み込めませんでした。権限の問題かも？`,
+        err
+      )
+      return null
     }
   }
 

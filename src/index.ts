@@ -24,11 +24,19 @@ const {
 console.log('Minecord を開始しています ...')
 
 const client: Client = new Client()
-let clientChannel: Channel
+let clientMessage: Message
 client.on(
   'ready',
   async (): Promise<void> => {
-    clientChannel = await client.channels.fetch(discordChannel)
+    const fetchedChannel: Channel = await client.channels.fetch(discordChannel)
+    const canHandle = (ch: any): ch is TextChannel | DMChannel => {
+      return ch instanceof TextChannel || ch instanceof DMChannel
+    }
+    if (!canHandle(fetchedChannel)) {
+      console.log('この Discord のチャンネルは非対応の形式です', fetchedChannel)
+      throw Error('非対応の Discord チャンネル')
+    }
+    clientMessage = new Message(client, {}, fetchedChannel)
     console.log('準備が完了しました')
   }
 )
@@ -44,12 +52,12 @@ const plugins: Plugin[] = loadPlugins(
 client.on(
   'message',
   async (message: Message): Promise<void> => {
-    if (message.channel.id !== clientChannel.id) {
+    if (message.channel.id !== clientMessage.channel.id) {
       console.log(
         'クライアント、メッセージそれぞれから取得したチャンネルIDが一致しません',
         {
           messageClientId: message.channel.id,
-          clientAuthorId: clientChannel.id,
+          clientAuthorId: clientMessage.channel.id,
         }
       )
       return
@@ -71,7 +79,6 @@ client.on(
       plugins.map(({ discord }: Plugin) =>
         discord({
           message: message,
-          channel: message.channel,
           user: client.user,
           sendToDiscord: (...args: Parameters<Message['channel']['send']>) =>
             message.channel.send(...args),
@@ -93,27 +100,15 @@ tail.on('line', async (line: string) => {
   }
 
   const minecraftLogLine = new MinecraftLogLine(regExpExecArray)
-  const fetchedChannel: Channel = await client.channels.fetch(discordChannel)
-  const canHandle = (ch: any): ch is TextChannel | DMChannel => {
-    return ch instanceof TextChannel || ch instanceof DMChannel
-  }
-  if (!canHandle(fetchedChannel)) {
-    console.log('この Discord のチャンネルは非対応の形式です', {
-      fetchedChannel,
-    })
-    return
-  }
-  console.log('Discord のチャンネルを読み込みました')
-  const fetchedMessage: Message = new Message(client, {}, fetchedChannel)
 
   await Promise.all(
     plugins.map(({ minecraft }: Plugin) =>
       minecraft({
         logLine: minecraftLogLine,
-        channel: fetchedMessage.channel,
+        channel: clientMessage.channel,
         user: client.user,
         sendToDiscord: (...args: Parameters<Message['channel']['send']>) =>
-          fetchedMessage.channel.send(...args),
+          clientMessage.channel.send(...args),
         sendToMinecraft: (args: string) => rcon.send(args),
       })
     )
