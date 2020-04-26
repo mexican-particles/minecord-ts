@@ -9,6 +9,9 @@ export const clientOnMessage = async (
   rcon: Rcon,
   message: Message
 ): Promise<void> => {
+  if (message.author.bot) {
+    return
+  }
   if (message.channel.id !== clientMessage.channel.id) {
     console.log(
       'クライアント、メッセージそれぞれから取得したチャンネルIDが一致しません',
@@ -19,7 +22,7 @@ export const clientOnMessage = async (
     )
     return
   }
-  if (message.author.bot || message.author.id === user?.id) {
+  if (message.author.id !== user?.id) {
     console.log(
       'クライアント、メッセージそれぞれから取得したユーザIDが一致しません',
       {
