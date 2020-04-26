@@ -1,9 +1,9 @@
 import { Client, Message } from 'discord.js'
-import Plugin from './Plugin'
 import Rcon from 'rcon-ts'
+import PluginList from '../PluginList'
 
 export const clientOnMessage = async (
-  plugins: Plugin[],
+  pluginList: PluginList,
   clientMessage: Message,
   user: Client['user'],
   rcon: Rcon,
@@ -32,16 +32,16 @@ export const clientOnMessage = async (
   }
 
   await rcon.connect()
-  await Promise.all(
-    plugins.map(({ discord }: Plugin) =>
-      discord({
-        message: message,
-        user: user,
-        sendToDiscord: (...args: Parameters<Message['channel']['send']>) =>
-          message.channel.send(...args),
-        sendToMinecraft: (args: string) => rcon.send(args),
-      })
-    )
-  )
+  console.log('RCON に接続しました')
+
+  await pluginList.discord({
+    message: message,
+    user: user,
+    sendToDiscord: (...args: Parameters<Message['channel']['send']>) =>
+      message.channel.send(...args),
+    sendToMinecraft: (args: string) => rcon.send(args),
+  })
+
   await rcon.disconnect()
+  console.log('RCON から切断しました')
 }

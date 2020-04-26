@@ -1,21 +1,25 @@
-import Plugin from '../Plugin'
-import { cmdRegex, cmdRegexRepDic } from './dictionaries/cmdRegex'
-import { sendToMinecraftWithRegexRepDic } from '../pluginHelper'
+import { Plugin } from '../Plugin'
+import { cmdRegex, cmdRegexRepDic } from './libs/cmdRegex'
+import { replaceWithRegexDic } from '../dictionaryHelper'
 
-export default new Plugin({
+const command: Plugin = {
   async discord({ message, sendToMinecraft, sendToDiscord }): Promise<void> {
     await message.cleanContent.split(/\r?\n/g).map(
-      async(command: string): Promise<void> => {
+      async (command: string): Promise<void> => {
         if (!command.startsWith('!') || command === '!ping') {
           return
         }
 
         for (const key in cmdRegex) {
-          if (cmdRegex.hasOwnProperty(key) && cmdRegex[key].test(command.trim())) {
-            console.log(`コマンド ${command} を実行します`)
-            await sendToMinecraft(command.slice(1).trim())
-            return
+          if (!cmdRegex.hasOwnProperty(key)) {
+            continue
           }
+          if (!cmdRegex[key].test(command.trim())) {
+            continue
+          }
+          console.log(`コマンド ${command} を実行します`)
+          await sendToMinecraft(command.slice(1).trim())
+          return
         }
 
         await sendToDiscord(
@@ -25,7 +29,18 @@ export default new Plugin({
     )
   },
 
-  async minecraft(args) {
-    await sendToMinecraftWithRegexRepDic(args, cmdRegexRepDic)
+  async minecraft({ logLine, sendToDiscord }) {
+    if (!logLine.isServerInfoMessage()) {
+      return
+    }
+    const newMessage: string | null = replaceWithRegexDic(
+      logLine.message,
+      cmdRegexRepDic
+    )
+    if (newMessage !== null) {
+      await sendToDiscord(newMessage)
+    }
   },
-})
+}
+
+export default command

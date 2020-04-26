@@ -5,15 +5,13 @@ import config from './config'
 import { Client, Message } from 'discord.js'
 import Rcon from 'rcon-ts'
 import Tail from './Tail'
-import { loadPlugins } from './pluginHelper'
-import Plugin from './Plugin'
-import { tailOnLine } from './tailOnLine'
-import { clientOnMessage } from './clientOnMessage'
-import { clientOnReady } from './clientOnReady'
+import { tailOnLine } from './listeners/tailOnLine'
+import { clientOnMessage } from './listeners/clientOnMessage'
+import { clientOnReady } from './listeners/clientOnReady'
+import DictionaryList from './DictionaryList'
+import PluginList from './PluginList'
 
 const {
-  enable,
-  disable,
   minecraftLog,
   minecraftRconHost,
   minecraftRconPort,
@@ -40,19 +38,28 @@ const rcon: Rcon = new Rcon({
   port: minecraftRconPort,
   password: minecraftRconPassword,
 })
-const plugins: Plugin[] = loadPlugins(
-  enable.filter((pluginName) => !disable.includes(pluginName))
-)
+const pluginList = new PluginList()
 client.on(
   'message',
   async (message: Message): Promise<void> => {
-    await clientOnMessage(plugins, clientMessage, client.user, rcon, message)
+    await clientOnMessage(pluginList, clientMessage, client.user, rcon, message)
   }
 )
 
+const dictionaryList: DictionaryList = new DictionaryList()
 const tail: Tail = new Tail(minecraftLog, encode)
-tail.on('line', async (line: string) => {
-  await tailOnLine(plugins, clientMessage, client.user, rcon, line)
-})
+tail.on(
+  'line',
+  async (line: string): Promise<void> => {
+    await tailOnLine(
+      pluginList,
+      dictionaryList,
+      clientMessage,
+      client.user,
+      rcon,
+      line
+    )
+  }
+)
 
 client.login(discordBotToken)

@@ -1,11 +1,14 @@
 {
-  "pluginsDir": null,
-  "enable": ["chat"],
-  "disable": [],
-  "minecraftLog": "/var/logs/minecraft/latest.log",
+  "language": "en",
+  "pluginList": ["chat", "command", "ping"],
+  "pluginDir": "",
+  "dictionaryList": ["death", "login", "server", "whiteList"],
+  "dictionaryDir": "",
+  "minecraftLog": "/var/minecraft/logs/latest.log",
   "minecraftRconHost": "localhost",
   "minecraftRconPort": 25575,
   "minecraftRconPassword": "secret",
   "discordBotToken": "",
-  "discordChannel": ""
+  "discordChannel": "",
+  "encode": "utf-8"
 }

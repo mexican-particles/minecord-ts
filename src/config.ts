@@ -2,9 +2,11 @@ import packageJson from '../package.json'
 import commander from 'commander'
 
 type Config = {
-  pluginsDir: string | null
-  enable: string[]
-  disable: string[]
+  language: 'en' | 'ja'
+  pluginList: string[]
+  pluginDir: string
+  dictionaryList: string[]
+  dictionaryDir: string
   minecraftLog: string
   minecraftRconHost: string
   minecraftRconPort: number
@@ -15,9 +17,11 @@ type Config = {
 }
 
 const configDefault: Config = {
-  pluginsDir: null,
-  enable: ['chat'],
-  disable: [],
+  language: 'en',
+  pluginList: ['chat', 'command', 'ping'],
+  pluginDir: '',
+  dictionaryList: [],
+  dictionaryDir: '',
   minecraftLog: '/var/minecraft/logs/latest.log',
   minecraftRconHost: 'localhost',
   minecraftRconPort: 25575,
@@ -30,15 +34,20 @@ const configDefault: Config = {
 commander
   .version(packageJson.version)
   .option('-c, --config <file>', 'set configuration file')
-  .option('-p, --plugins-dir <dir>', 'set local plugins directory')
+  .option('-l, --language <lang>', 'set language ("en" or "ja")')
+  .option('-p, --pluginList-dir <dir>', 'set local pluginList directory')
   .option(
-    '--enable <plugins>',
-    'enable plugin by name, "--enable PLUGIN1,PLUGIN2" for multiple plugins',
+    '-d, --dictionaryList-dir <dir>',
+    'set local dictionaryList directory'
+  )
+  .option(
+    '--pluginList <pluginList>',
+    'enable plugin by name, "--enable PLUGIN1,PLUGIN2" for multiple pluginList',
     (list) => list.split(',')
   )
   .option(
-    '--disable <plugins>',
-    'disable plugin by name, "--disable PLUGIN1,PLUGIN2" for multiple plugins',
+    '--dictionaryList <pluginList>',
+    'enable dictionary by name, "--enable DICTIONARY1,DICTIONARY2" for multiple dictionaryList',
     (list) => list.split(',')
   )
   .option(
@@ -77,22 +86,27 @@ export default (): Config => {
   const config: Config =
     commander.config ?? (require('../config.json') as Config)
   cache = {
-    pluginsDir:
-      commander.pluginsDir || config.pluginsDir || configDefault.pluginsDir,
-    enable: [
+    language: commander.language || config.language || configDefault.language,
+    pluginList: [
       ...new Set([
-        ...(commander.enable || []),
-        ...(config.enable || []),
-        ...configDefault.enable,
+        ...(commander.pluginList || []),
+        ...(config.pluginList || []),
+        ...configDefault.pluginList,
       ]),
     ],
-    disable: [
+    pluginDir:
+      commander.pluginDir || config.pluginDir || configDefault.pluginDir,
+    dictionaryList: [
       ...new Set([
-        ...(commander.disable || []),
-        ...(config.disable || []),
-        ...configDefault.disable,
+        ...(commander.dictionaryList || []),
+        ...(config.dictionaryList || []),
+        ...configDefault.dictionaryList,
       ]),
     ],
+    dictionaryDir:
+      commander.dictionaryDir ||
+      config.dictionaryDir ||
+      configDefault.dictionaryDir,
     minecraftLog:
       commander.minecraftLog ||
       config.minecraftLog ||
@@ -119,5 +133,6 @@ export default (): Config => {
       configDefault.discordChannel,
     encode: commander.encode || config.encode || configDefault.encode,
   }
+  console.log('設定ファイルを読み込みました')
   return cache
 }
