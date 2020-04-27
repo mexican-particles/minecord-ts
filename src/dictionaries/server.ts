@@ -12,7 +12,7 @@ const server: RegexDic = {
     ja: () => 'マインクラフトサーバは起動しています。。。',
   },
   ready: {
-    pattern: /^Done \([^\s]+s\)! For help, type "help" or "\?"$/,
+    pattern: /^Done \([^\s]+s\)! For help, type "help"( or "\?")?$/,
     en: () => 'Minecraft server was started.',
     ja: () => 'マインクラフトサーバは起動しました',
   },

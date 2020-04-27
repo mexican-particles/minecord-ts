@@ -237,7 +237,7 @@ const death: RegexDic = {
   playersOrMobs: {
     pattern: /^([^\s]+) was slain by ([^\s]+)$/,
     ja: (message, player, playerOrMob) =>
-      `${player} は ${playerOrMob} に殺害された。`,
+      `${player} は ${playerOrMob} に殺害された`,
   },
   playersOrMobs2: {
     pattern: /^([^\s]+) was slain by ([^\s]+) using ([^\s]+)$/,
@@ -247,7 +247,7 @@ const death: RegexDic = {
   playersOrMobs3: {
     pattern: /^([^\s]+) was fireballed by ([^\s]+)$/,
     ja: (message, player, playerOrMob) =>
-      `${player} は ${playerOrMob} に火だるまにされた。`,
+      `${player} は ${playerOrMob} に火だるまにされた`,
   },
   playersOrMobs4: {
     pattern: /^([^\s]+) was fireballed by ([^\s]+) using ([^\s]+)$/,
