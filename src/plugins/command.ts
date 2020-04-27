@@ -22,9 +22,7 @@ const command: Plugin = {
           return
         }
 
-        await sendToDiscord(
-          `コマンド ${command} は実行可能リストに定義されていません`
-        )
+        console.log(`コマンド ${command} は実行可能リストに定義されていません`)
       }
     )
   },
