@@ -6,10 +6,10 @@ export default class PluginList {
   private readonly list: Plugin[]
 
   constructor() {
-    this.list = this.loadDictionary()
+    this.list = this.loadPlugin()
   }
 
-  private loadDictionary(): Plugin[] {
+  private loadPlugin(): Plugin[] {
     const pluginPathList: string[] = ['./plugins/']
     if (config().pluginDir) {
       pluginPathList.push(config().pluginDir)
