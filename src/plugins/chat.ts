@@ -1,6 +1,7 @@
 import { Plugin } from '../Plugin'
 import { chatRegexRepDic } from './libs/chatRegex'
 import { replaceWithRegexDic } from '../dictionaryHelper'
+import { cmdInvoker } from './libs/cmdInvoker'
 
 const chat: Plugin = {
   async discord({ message, sendToMinecraft }): Promise<void> {
@@ -13,7 +14,7 @@ const chat: Plugin = {
     await sendToMinecraft(`tellraw @a ${JSON.stringify({ text: text })}`)
   },
 
-  async minecraft({ logLine, sendToDiscord }): Promise<void> {
+  async minecraft({ logLine, sendToDiscord, sendToMinecraft }): Promise<void> {
     if (!logLine.isUnmutedChatMessage()) {
       return
     }
@@ -23,6 +24,12 @@ const chat: Plugin = {
     )
     if (newMessage !== null) {
       await sendToDiscord(newMessage)
+    }
+
+    const message: string | null =
+      /^<[\w\d_]+> (.*)$/.exec(logLine.message)?.[1] ?? null
+    if (message) {
+      await cmdInvoker(message, sendToMinecraft)
     }
   },
 }

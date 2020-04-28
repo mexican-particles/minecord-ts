@@ -1,29 +1,16 @@
 import { Plugin } from '../Plugin'
-import { cmdRegex, cmdRegexRepDic } from './libs/cmdRegex'
+import { cmdRegexRepDic } from './libs/cmdRegex'
 import { replaceWithRegexDic } from '../dictionaryHelper'
+import { cmdInvoker } from './libs/cmdInvoker'
 
 const command: Plugin = {
-  async discord({ message, sendToMinecraft, sendToDiscord }): Promise<void> {
-    await message.cleanContent.split(/\r?\n/g).map(
-      async (command: string): Promise<void> => {
-        if (!command.startsWith('!') || command === '!ping') {
-          return
+  async discord({ message, sendToMinecraft }): Promise<void> {
+    await Promise.all(
+      message.cleanContent.split(/\r?\n/g).map(
+        async (command: string): Promise<void> => {
+          await cmdInvoker(command, sendToMinecraft)
         }
-
-        for (const key in cmdRegex) {
-          if (!cmdRegex.hasOwnProperty(key)) {
-            continue
-          }
-          if (!cmdRegex[key].test(command.trim())) {
-            continue
-          }
-          console.log(`コマンド ${command} を実行します`)
-          await sendToMinecraft(command.slice(1).trim())
-          return
-        }
-
-        console.log(`コマンド ${command} は実行可能リストに定義されていません`)
-      }
+      )
     )
   },
 

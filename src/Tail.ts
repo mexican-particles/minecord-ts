@@ -4,6 +4,7 @@ import { createInterface } from 'readline'
 import { dirname } from 'path'
 import { FSWatcher, watch } from 'chokidar'
 import * as iconv from 'iconv-lite'
+import config from './config'
 
 export default class Tail extends EventEmitter {
   private readonly filename: string
@@ -11,10 +12,10 @@ export default class Tail extends EventEmitter {
   private watcher: FSWatcher | null
   private position: number
 
-  constructor(filename: string, encoding: string = 'utf-8') {
+  constructor() {
     super()
-    this.filename = filename
-    this.encoding = encoding
+    this.filename = config().minecraftLog
+    this.encoding = config().encode
     this.watcher = null
     this.position = 0
     this.watch()

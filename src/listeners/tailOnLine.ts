@@ -1,16 +1,15 @@
 import MinecraftLogLine from '../MinecraftLogLine'
 import { Client, Message } from 'discord.js'
-import Rcon from 'rcon-ts'
 import DictionaryList from '../DictionaryList'
 import PluginList from '../PluginList'
+import { messageFactory } from '../messageFactory'
+import { disconnectRcon, sendRcon } from '../rconHelper'
 
 const regexpLog: RegExp = /^\[(.*)]\s\[([^/]*)\/(.*)][^:]*:\s(.*)$/
 export const tailOnLine = async (
   pluginList: PluginList,
   dictionaryList: DictionaryList,
-  clientMessage: Message,
-  user: Client['user'],
-  rcon: Rcon,
+  client: Client,
   line: string
 ): Promise<void> => {
   const regExpExecArray: RegExpExecArray | null = regexpLog.exec(line)
@@ -19,15 +18,20 @@ export const tailOnLine = async (
     return
   }
   const minecraftLogLine = new MinecraftLogLine(regExpExecArray)
+  const clientMessage: Message = await messageFactory(client)
 
   await pluginList.minecraft({
     logLine: minecraftLogLine,
     channel: clientMessage.channel,
-    user,
-    sendToDiscord: (...args: Parameters<Message['channel']['send']>) =>
-      clientMessage.channel.send(...args),
-    sendToMinecraft: (args: string) => rcon.send(args),
+    user: client.user,
+    sendToDiscord: async (
+      ...args: Parameters<Message['channel']['send']>
+    ): Promise<Message> => await clientMessage.channel.send(...args),
+    sendToMinecraft: async (args: string): Promise<string> =>
+      await sendRcon(args),
   })
+
+  await disconnectRcon()
 
   if (!minecraftLogLine.isServerInfoMessage()) {
     return

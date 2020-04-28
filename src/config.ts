@@ -18,9 +18,9 @@ type Config = {
 
 const configDefault: Config = {
   language: 'en',
-  pluginList: ['chat', 'command', 'ping'],
+  pluginList: ['ping'],
   pluginDir: '',
-  dictionaryList: [],
+  dictionaryList: ['server'],
   dictionaryDir: '',
   minecraftLog: '/var/minecraft/logs/latest.log',
   minecraftRconHost: 'localhost',
