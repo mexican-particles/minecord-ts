@@ -23,7 +23,7 @@ const chat: Plugin = {
       chatRegexRepDic
     )
     if (newMessage !== null) {
-      await sendToDiscord(newMessage)
+      await sendToDiscord({ content: newMessage })
     }
 
     const message: string | null =

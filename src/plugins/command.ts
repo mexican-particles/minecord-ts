@@ -14,7 +14,7 @@ const command: Plugin = {
     )
   },
 
-  async minecraft({ logLine, sendToDiscord }) {
+  async minecraft({ logLine, sendToDiscord, sendToMinecraft }) {
     if (!logLine.isServerInfoMessage()) {
       return
     }
@@ -23,7 +23,10 @@ const command: Plugin = {
       cmdRegexRepDic
     )
     if (newMessage !== null) {
-      await sendToDiscord(newMessage)
+      await sendToDiscord({ content: newMessage })
+      await sendToMinecraft(
+        `tellraw @a ${JSON.stringify({ text: newMessage })}`
+      )
     }
   },
 }

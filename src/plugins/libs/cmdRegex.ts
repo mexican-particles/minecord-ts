@@ -1,9 +1,9 @@
 import { RegexDic } from '../../dictionaryHelper'
 
 export const cmdRegex: { [key: string]: RegExp } = {
-  weather: /^\!weather\s+(clear|rain|thunder)$/,
-  timeSet: /^\!time\s+set\s+(day|night)$/,
-  timeAdd: /^\!time\s+add\s+\w+$/,
+  weather: /^\!weather\s+(clear|rain|thunder)(\s+\w+)?\s*$/,
+  timeSet: /^\!time\s+set\s+(day|night)\s*$/,
+  timeAdd: /^\!time\s+add\s+\w+\s*$/,
 }
 
 export const cmdRegexRepDic: RegexDic = {
