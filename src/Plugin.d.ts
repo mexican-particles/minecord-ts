@@ -1,6 +1,6 @@
+import MinecraftLogLine from '@/MinecraftLogLine'
 import { Client, Message } from 'discord.js'
 import Rcon from 'rcon-ts'
-import MinecraftLogLine from './MinecraftLogLine'
 
 type MinecraftArgs = {
   logLine: MinecraftLogLine

@@ -1,4 +1,4 @@
-import { Plugin } from '../Plugin'
+import { Plugin } from '@/Plugin'
 
 const ping: Plugin = {
   async discord({ message, sendToDiscord, sendToMinecraft }): Promise<void> {

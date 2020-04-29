@@ -1,5 +1,5 @@
-import Rcon, { State } from 'rcon-ts'
-import config from './config'
+import Rcon from 'rcon-ts'
+import config from '@/config'
 
 const rcon: Rcon = new Rcon({
   host: config().minecraftRconHost,

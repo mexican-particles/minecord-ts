@@ -1,7 +1,7 @@
-import { Plugin } from '../Plugin'
-import { cmdRegexRepDic } from './libs/cmdRegex'
-import { replaceWithRegexDic } from '../dictionaryHelper'
-import { cmdInvoker } from './libs/cmdInvoker'
+import { Plugin } from '@/Plugin'
+import { replaceWithRegexDic } from '@/dictionaryHelper'
+import { cmdRegexRepDic } from '@/plugins/libs/cmdRegex'
+import { cmdInvoker } from '@/plugins/libs/cmdInvoker'
 
 const command: Plugin = {
   async discord({ message, sendToMinecraft }): Promise<void> {

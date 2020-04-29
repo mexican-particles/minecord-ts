@@ -1,5 +1,5 @@
 import { Channel, Client, DMChannel, Message, TextChannel } from 'discord.js'
-import config from './config'
+import config from '@/config'
 
 const canHandle = (ch: any): ch is TextChannel | DMChannel => {
   return ch instanceof TextChannel || ch instanceof DMChannel

@@ -1,4 +1,4 @@
-import { RegexDic } from '../../dictionaryHelper'
+import { RegexDic } from '@/dictionaryHelper'
 
 export const chatRegexRepDic: RegexDic = {
   angleBrackets: {

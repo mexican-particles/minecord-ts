@@ -1,4 +1,4 @@
-import { RegexDic } from '../dictionaryHelper'
+import { RegexDic } from '@/dictionaryHelper'
 
 /**
  * @link https://minecraft-ja.gamepedia.com/%E4%BD%93%E5%8A%9B#.E6.AD.BB.E4.BA.A1.E3.83.A1.E3.83.83.E3.82.BB.E3.83.BC.E3.82.B8

@@ -1,9 +1,9 @@
-import MinecraftLogLine from '../MinecraftLogLine'
+import MinecraftLogLine from '@/MinecraftLogLine'
+import { disconnectRcon, sendRcon } from '@/rconHelper'
+import { messageFactory } from '@/messageFactory'
 import { Client, Message } from 'discord.js'
-import DictionaryList from '../DictionaryList'
-import PluginList from '../PluginList'
-import { messageFactory } from '../messageFactory'
-import { disconnectRcon, sendRcon } from '../rconHelper'
+import PluginList from '@/PluginList'
+import DictionaryList from '@/DictionaryList'
 
 const regexpLog: RegExp = /^\[(.*)]\s\[([^/]*)\/(.*)][^:]*:\s(.*)$/
 export const tailOnLine = async (

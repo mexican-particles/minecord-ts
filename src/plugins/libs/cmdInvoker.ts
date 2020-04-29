@@ -1,10 +1,10 @@
-import { cmdRegex } from './cmdRegex'
+import { cmdRegex } from '@/plugins/libs/cmdRegex'
 
 export const cmdInvoker = async <T>(
   command: string,
   invoker: (command: string) => Promise<T>
 ): Promise<void> => {
-  if (!command.startsWith('!') || command === '!ping') {
+  if (!command.startsWith('!')) {
     return
   }
 

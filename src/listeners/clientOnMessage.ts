@@ -1,7 +1,7 @@
+import { disconnectRcon, sendRcon } from '@/rconHelper'
+import { messageFactory } from '@/messageFactory'
 import { Client, Message } from 'discord.js'
-import PluginList from '../PluginList'
-import { messageFactory } from '../messageFactory'
-import { disconnectRcon, sendRcon } from '../rconHelper'
+import PluginList from '@/PluginList'
 
 export const clientOnMessage = async (
   pluginList: PluginList,

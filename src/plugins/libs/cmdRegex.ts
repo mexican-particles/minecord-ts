@@ -1,4 +1,4 @@
-import { RegexDic } from '../../dictionaryHelper'
+import { RegexDic } from '@/dictionaryHelper'
 
 export const cmdRegex: { [key: string]: RegExp } = {
   weather: /^\!weather\s+(clear|rain|thunder)(\s+\w+)?\s*$/,

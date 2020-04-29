@@ -1,6 +1,6 @@
-import { RegexDic, replaceWithRegexDic } from './dictionaryHelper'
-import config from './config'
-import { moduleLoader } from './moduleLoader'
+import { RegexDic, replaceWithRegexDic } from '@/dictionaryHelper'
+import config from '@/config'
+import { moduleLoader } from '@/moduleLoader'
 
 export default class DictionaryList {
   private readonly list: RegexDic[]

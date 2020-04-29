@@ -1,6 +1,6 @@
-import config from './config'
-import { moduleLoader } from './moduleLoader'
-import { Plugin } from './Plugin'
+import { Plugin } from '@/Plugin'
+import config from '@/config'
+import { moduleLoader } from '@/moduleLoader'
 
 export default class PluginList {
   private readonly list: Plugin[]

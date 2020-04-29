@@ -1,5 +1,5 @@
-import { Plugin } from '../Plugin'
-import { cmdInvoker } from './libs/cmdInvoker'
+import { Plugin } from '@/Plugin'
+import { cmdInvoker } from '@/plugins/libs/cmdInvoker'
 
 const setOnClearMorning = async (
   ...[command, sendToMinecraft]: Parameters<typeof cmdInvoker>
