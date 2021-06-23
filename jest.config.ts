@@ -1,7 +1,8 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
+import { InitialOptions } from '@jest/types/build/Config'
 
-module.exports = {
+const config: InitialOptions = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -192,3 +193,5 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 };
+
+export default config
