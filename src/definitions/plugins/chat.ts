@@ -1,7 +1,7 @@
-import { Plugin } from '@/Plugin'
-import { replaceWithRegexDic } from '@/dictionaryHelper'
-import { cmdInvoker } from '@/plugins/libs/cmdInvoker'
-import { chatRegexRepDic } from '@/plugins/libs/chatRegex'
+import { chatRegexRepDic } from '@/definitions/plugins/libs/chatRegex'
+import { cmdInvoker } from '@/definitions/plugins/libs/cmdInvoker'
+import { replaceWithRegexDic } from '@/dictionary/replaceWithRegexDic'
+import type { Plugin } from '@/plugin/types'
 
 const chat: Plugin = {
   async discord({ message, sendToMinecraft }): Promise<void> {
@@ -11,7 +11,7 @@ const chat: Plugin = {
     const text: string = `<${
       (message.member && message.member.nickname) || message.author.username
     }> ${message.cleanContent}`
-    await sendToMinecraft(`tellraw @a ${JSON.stringify({ text: text })}`)
+    await sendToMinecraft(`tellraw @a ${JSON.stringify({ text })}`)
   },
 
   async minecraft({ logLine, sendToDiscord, sendToMinecraft }): Promise<void> {
@@ -23,7 +23,7 @@ const chat: Plugin = {
       chatRegexRepDic
     )
     if (newMessage !== null) {
-      await sendToDiscord({ content: newMessage })
+      await sendToDiscord({ content: newMessage }, {})
     }
 
     const message: string | null =

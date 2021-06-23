@@ -1,4 +1,4 @@
-import MinecraftLogLine from '@/MinecraftLogLine'
+import { MinecraftLogLine } from '@/utils/minecraftLogLine'
 import { Client, Message } from 'discord.js'
 import Rcon from 'rcon-ts'
 

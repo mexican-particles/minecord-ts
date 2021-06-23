@@ -1,4 +1,4 @@
-import { RegexDic } from '@/dictionaryHelper'
+import type { RegexDic } from '@/dictionary/types'
 
 const server: RegexDic = {
   stopping: {

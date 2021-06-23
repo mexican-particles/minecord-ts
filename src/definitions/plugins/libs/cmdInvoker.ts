@@ -1,4 +1,4 @@
-import { cmdRegex } from '@/plugins/libs/cmdRegex'
+import { cmdRegex } from '@/definitions/plugins/libs/cmdRegex'
 
 export const cmdInvoker = async <T>(
   command: string,
@@ -9,7 +9,7 @@ export const cmdInvoker = async <T>(
   }
 
   for (const key in cmdRegex) {
-    if (!cmdRegex.hasOwnProperty(key)) {
+    if (!Object.prototype.hasOwnProperty.call(cmdRegex, key)) {
       continue
     }
     if (!cmdRegex[key].test(command.trim())) {

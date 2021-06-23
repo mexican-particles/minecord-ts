@@ -1,4 +1,4 @@
-export default class MinecraftLogLine {
+export class MinecraftLogLine {
   private readonly _log: string
   private readonly _time: string
   private readonly _causedAt: string
@@ -45,7 +45,7 @@ export default class MinecraftLogLine {
   }
 
   isServerMessage(): boolean {
-    return this.causedAt.indexOf('Server thread') !== -1
+    return this.causedAt.includes('Server thread')
   }
 
   isServerInfoMessage(): boolean {
@@ -53,11 +53,11 @@ export default class MinecraftLogLine {
   }
 
   isChatMessage(): boolean {
-    return this.causedAt.indexOf('Async Chat Thread') !== -1
+    return this.causedAt.includes('Async Chat Thread')
   }
 
   isMutedMessage(): boolean {
-    return this.message.indexOf('mute') !== -1
+    return this.message.includes('mute')
   }
 
   isUnmutedChatMessage(): boolean {

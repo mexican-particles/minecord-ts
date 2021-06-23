@@ -4,17 +4,19 @@ export const moduleLoader = <T>(
 ): T[] => {
   const moduleList: T[] = []
 
-  moduleNameList.map((moduleName: string) => {
+  moduleNameList.forEach((moduleName: string) => {
     let module: T | null = null
 
     for (const key in modulePathList) {
-      if (!modulePathList.hasOwnProperty(key)) {
+      if (!Object.prototype.hasOwnProperty.call(modulePathList, key)) {
         continue
       }
       try {
         module = require(`${modulePathList[key]}/${moduleName}`).default
         break
-      } catch (err) {}
+      } catch (err) {
+        console.log(`${moduleName} は読み込めませんでした`, { reason: err })
+      }
     }
 
     if (module) {

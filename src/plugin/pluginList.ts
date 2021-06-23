@@ -1,20 +1,11 @@
-import { Plugin } from '@/Plugin'
-import config from '@/config'
-import { moduleLoader } from '@/moduleLoader'
+import { loadPlugin } from '@/plugin/loadPlugin'
+import type { Plugin } from '@/plugin/types'
 
-export default class PluginList {
+export class PluginList {
   private readonly list: Plugin[]
 
   constructor() {
-    this.list = this.loadPlugin()
-  }
-
-  private loadPlugin(): Plugin[] {
-    const pluginPathList: string[] = ['./plugins/']
-    if (config().pluginDir) {
-      pluginPathList.push(config().pluginDir)
-    }
-    return moduleLoader<Plugin>(config().pluginList, pluginPathList)
+    this.list = loadPlugin()
   }
 
   async minecraft(

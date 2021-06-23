@@ -11,7 +11,7 @@
     "minecord": "./dist/index.js"
   },
   "scripts": {
-    "dist": "rm -rf ./dist && yarn build && cp -p ./{src,dist}/config.example.json",
+    "dist": "rm -rf ./dist && yarn build && cp -a ./src/config.example.json ./dist/config.json && cp -a ./entrypoint/* ./dist",
     "build": "babel src --extensions '.ts' --out-dir dist",
     "start": "nodemon dist/index.js",
     "test": "jest"

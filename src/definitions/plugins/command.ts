@@ -1,7 +1,7 @@
-import { Plugin } from '@/Plugin'
-import { replaceWithRegexDic } from '@/dictionaryHelper'
-import { cmdRegexRepDic } from '@/plugins/libs/cmdRegex'
-import { cmdInvoker } from '@/plugins/libs/cmdInvoker'
+import { cmdInvoker } from '@/definitions/plugins/libs/cmdInvoker'
+import { cmdRegexRepDic } from '@/definitions/plugins/libs/cmdRegex'
+import { replaceWithRegexDic } from '@/dictionary/replaceWithRegexDic'
+import type { Plugin } from '@/plugin/types'
 
 const command: Plugin = {
   async discord({ message, sendToMinecraft }): Promise<void> {
@@ -23,7 +23,7 @@ const command: Plugin = {
       cmdRegexRepDic
     )
     if (newMessage !== null) {
-      await sendToDiscord({ content: newMessage })
+      await sendToDiscord({ content: newMessage }, {})
       await sendToMinecraft(
         `tellraw @a ${JSON.stringify({ text: newMessage })}`
       )

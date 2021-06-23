@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 import '@babel/polyfill'
-import { tailOnLine } from '@/listeners/tailOnLine'
-import { messageFactory } from '@/messageFactory'
+import config from '@/config/config'
+import { DictionaryList } from '@/dictionary/dictionaryList'
 import { clientOnMessage } from '@/listeners/clientOnMessage'
+import { Tail } from '@/listeners/tail'
+import { tailOnLine } from '@/listeners/tailOnLine'
+import { PluginList } from '@/plugin/pluginList'
+import { messageFactory } from '@/utils/messageFactory'
 import { Client, Message } from 'discord.js'
-import Tail from '@/Tail'
-import PluginList from '@/PluginList'
-import config from '@/config'
-import DictionaryList from '@/DictionaryList'
 
 console.log('Minecord を開始しています ...')
 
@@ -38,4 +38,4 @@ tail.on(
   }
 )
 
-client.login(config().discordBotToken)
+;(async () => await client.login(config().discordBotToken))()

@@ -1,5 +1,5 @@
 import { mocker } from '../../testHelper'
-import { cmdInvoker } from '@/plugins/libs/cmdInvoker'
+import { cmdInvoker } from '@/definitions/plugins/libs/cmdInvoker'
 
 const invoker = mocker.wrap<Parameters<typeof cmdInvoker>[1]>(
   (command: string) => {

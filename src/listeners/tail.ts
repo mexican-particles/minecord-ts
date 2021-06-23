@@ -1,12 +1,12 @@
 import { EventEmitter } from 'events'
 import { createReadStream, Stats, statSync } from 'fs'
-import { createInterface } from 'readline'
 import { dirname } from 'path'
+import { createInterface } from 'readline'
+import config from '@/config/config'
 import { FSWatcher, watch } from 'chokidar'
 import * as iconv from 'iconv-lite'
-import config from './config'
 
-export default class Tail extends EventEmitter {
+export class Tail extends EventEmitter {
   private readonly filename: string
   private readonly encoding: string
   private watcher: FSWatcher | null
@@ -65,11 +65,12 @@ export default class Tail extends EventEmitter {
 
   private getStats(): Stats | null {
     try {
+      const stats = statSync(this.filename)
       console.log(`${this.filename} を読み込みました`)
-      return statSync(this.filename)
+      return stats
     } catch (err) {
       console.log(
-        `${this.filename} を読み込めませんでした。権限の問題かも？`,
+        `${this.filename} を読み込めませんでした。ファイルが存在しないか、権限の問題かも？`,
         err
       )
       return null

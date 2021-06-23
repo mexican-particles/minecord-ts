@@ -1,4 +1,5 @@
-import { RegexDic } from '@/dictionaryHelper'
+/* eslint @typescript-eslint/no-unused-vars: 0 */
+import type { RegexDic } from '@/dictionary/types'
 
 /**
  * @link https://minecraft-ja.gamepedia.com/%E4%BD%93%E5%8A%9B#.E6.AD.BB.E4.BA.A1.E3.83.A1.E3.83.83.E3.82.BB.E3.83.BC.E3.82.B8
@@ -184,7 +185,7 @@ const death: RegexDic = {
     ja: (message, player) => `${player} は花火の爆発に巻き込まれた`,
   },
   fireworkRockets2: {
-    pattern: /^([^\s]+)  went off with a bang whilst fighting ([^\s]+)$/,
+    pattern: /^([^\s]+) {2}went off with a bang whilst fighting ([^\s]+)$/,
     ja: (message, player, playerOrMob) =>
       `${player} は ${playerOrMob} と戦いながら花火の爆発に巻き込まれた`,
   },

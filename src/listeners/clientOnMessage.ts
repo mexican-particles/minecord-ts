@@ -1,7 +1,8 @@
-import { disconnectRcon, sendRcon } from '@/rconHelper'
-import { messageFactory } from '@/messageFactory'
+import { PluginList } from '@/plugin/pluginList'
+import { disconnectRcon } from '@/rcon/disconnectRcon'
+import { sendRcon } from '@/rcon/sendRcon'
+import { messageFactory } from '@/utils/messageFactory'
 import { Client, Message } from 'discord.js'
-import PluginList from '@/PluginList'
 
 export const clientOnMessage = async (
   pluginList: PluginList,
@@ -24,11 +25,11 @@ export const clientOnMessage = async (
   }
 
   await pluginList.discord({
-    message: message,
+    message,
     user: client.user,
     sendToDiscord: async (
       ...args: Parameters<Message['channel']['send']>
-    ): Promise<Message> => await message.channel.send(...args),
+    ): Promise<Message> => await message.channel.send(args),
     sendToMinecraft: async (args: string): Promise<string> =>
       await sendRcon(args),
   })

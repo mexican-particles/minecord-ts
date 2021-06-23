@@ -1,9 +1,10 @@
-import { RegexDic } from '@/dictionaryHelper'
+/* eslint @typescript-eslint/no-unused-vars: 0 */
+import type { RegexDic } from '@/dictionary/types'
 
 export const cmdRegex: { [key: string]: RegExp } = {
-  weather: /^\!weather\s+(clear|rain|thunder)(\s+\w+)?\s*$/,
-  timeSet: /^\!time\s+set\s+(day|night)\s*$/,
-  timeAdd: /^\!time\s+add\s+\w+\s*$/,
+  weather: /^!weather\s+(clear|rain|thunder)(\s+\w+)?\s*$/,
+  timeSet: /^!time\s+set\s+(day|night)\s*$/,
+  timeAdd: /^!time\s+add\s+\w+\s*$/,
 }
 
 export const cmdRegexRepDic: RegexDic = {

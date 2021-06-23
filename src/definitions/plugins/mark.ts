@@ -1,5 +1,5 @@
-import { Plugin } from '@/Plugin'
-import { cmdInvoker } from '@/plugins/libs/cmdInvoker'
+import { cmdInvoker } from '@/definitions/plugins/libs/cmdInvoker'
+import type { Plugin } from '@/plugin/types'
 
 const setOnClearMorning = async (
   ...[command, sendToMinecraft]: Parameters<typeof cmdInvoker>
@@ -33,7 +33,7 @@ const mark: Plugin = {
       )
     )
   },
-  async minecraft({ logLine, sendToDiscord, sendToMinecraft }) {
+  async minecraft({ logLine, sendToMinecraft }) {
     if (!logLine.isUnmutedChatMessage()) {
       return
     }
