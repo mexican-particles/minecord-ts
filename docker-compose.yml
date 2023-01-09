@@ -7,7 +7,20 @@ volumes:
 services:
     minecord:
         build: .
+        tty: true
         ports:
             - 25575:25575
         volumes:
             - .:/var/lib/minecord
+    # see https://github.com/itzg/docker-minecraft-server/blob/master/README.md
+    minecraft:
+        image: itzg/minecraft-server
+        tty: true
+        stdin_open: true
+        ports:
+            - 25565:25565
+        volumes:
+            - ./mc_data:/data
+        environment:
+            - EULA=TRUE
+        restart: always
