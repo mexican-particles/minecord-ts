@@ -1,4 +1,4 @@
-FROM node:16.12.0-alpine as node
+FROM node:18.13-alpine as node
 FROM docker:dind
 
 COPY --from=node /opt/yarn* /opt/yarn
