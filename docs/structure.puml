@@ -1,0 +1,79 @@
+@startuml
+hide empty methods
+hide empty members
+
+package main {
+  class index<<(S, magenta) Script>>
+
+  package PListener as "listener" {
+    interface IListener<<Index>>
+    class onReady<<(F, cyan)Function>>
+    class onMessage<<(F, cyan)Function>>
+    class onLine<<(F, cyan)Function>>
+
+    IListener .d.> onReady
+    IListener .d.> onMessage
+    IListener .d.> onLine
+  }
+
+  package PDict as "dictionary" {
+    interface IDictionary<<Index>>
+    class loadDictionary<<(F, cyan)Function>>
+    class DictionaryList<<Class>>
+
+    IDictionary .d.> DictionaryList
+    DictionaryList -d-> loadDictionary: use
+  }
+
+  package PPlugin as "plugin" {
+    interface IPlugin<<Index>>
+    class loadPlugin<<(F, cyan)Function>>
+    class PluginList<<Class>>
+
+    IPlugin .d.> PluginList
+    PluginList -d-> loadPlugin: use
+  }
+
+  package PTail as "tail" {
+    interface ITail<<Index>>
+    class Tail<<Class>>
+
+    ITail .d.> Tail
+  }
+
+  package PRcon as "rcon" {
+    interface IRcon<<Index>>
+    class disconnectRcon<<(F, cyan)Function>>
+    class sendRcon<<(F, cyan)Function>>
+    class rcon<<(O, yellow)Object>>
+
+    IRcon .d.> disconnectRcon
+    IRcon .d.> sendRcon
+    disconnectRcon -d-> rcon: use
+    sendRcon -d-> rcon: use
+  }
+
+  index -d-> IListener: use
+  index -d-o ITail: instantiation
+  index -d-o IDictionary: instantiation
+  index -d-o IPlugin: instantiation
+
+  onMessage -d-> IRcon: use
+  onLine -d-> IRcon: use
+}
+
+package PConfig as "config" {
+  interface IConfig <<Index>>
+  class commander<<(O, yellow)Object>>
+  class config<<(F, cyan)Function>>
+  class configDefault<<(O, yellow)Object>>
+
+  IConfig .d.> config
+  config -d-> commander: use
+  config -d-> configDefault: use
+}
+
+PRcon --[hidden]r-- PConfig
+main --> IConfig: use
+
+@enduml

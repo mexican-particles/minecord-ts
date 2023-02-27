@@ -1,37 +1,36 @@
-import { chatRegexRepDic } from '@/definitions/plugins/libs/chatRegex'
-import { cmdInvoker } from '@/definitions/plugins/libs/cmdInvoker'
-import { replaceWithRegexDic } from '@/dictionary/replaceWithRegexDic'
-import type { Plugin } from '@/plugin/types'
+import { chatRegexRepDic } from './libs/chatRegex'
+import { cmdInvoker } from './libs/cmdInvoker'
+import { replaceWithRegexDic, toDiscordEvent, toMinecraftEvent, AbstractPlugin } from '@/core'
 
-const chat: Plugin = {
-  async discord({ message, sendToMinecraft }): Promise<void> {
-    if (message.cleanContent.startsWith('!')) {
+class Chat extends AbstractPlugin {
+  async discord(e: toDiscordEvent): Promise<void> {
+    if (e.message.cleanContent.startsWith('!')) {
       return
     }
     const text: string = `<${
-      (message.member && message.member.nickname) || message.author.username
-    }> ${message.cleanContent}`
-    await sendToMinecraft(`tellraw @a ${JSON.stringify({ text })}`)
-  },
+      (e.message.member && e.message.member.nickname) || e.message.author.username
+    }> ${e.message.cleanContent}`
+    await e.sendToMinecraft(`tellraw @a ${JSON.stringify({ text })}`)
+  }
 
-  async minecraft({ logLine, sendToDiscord, sendToMinecraft }): Promise<void> {
-    if (!logLine.isUnmutedChatMessage()) {
+  async minecraft(e: toMinecraftEvent): Promise<void> {
+    if (e.logLine.isMutedMessage()) {
       return
     }
     const newMessage: string | null = replaceWithRegexDic(
-      logLine.message,
+      e.logLine.message,
       chatRegexRepDic
     )
     if (newMessage !== null) {
-      await sendToDiscord({ content: newMessage }, {})
+      await e.sendToDiscord(newMessage)
     }
 
     const message: string | null =
-      /^<[\w\d_]+> (.*)$/.exec(logLine.message)?.[1] ?? null
+      /^<[\w\d_]+> (.*)$/.exec(e.logLine.message)?.[1] ?? null
     if (message) {
-      await cmdInvoker(message, sendToMinecraft)
+      await cmdInvoker(message, e.sendToMinecraft)
     }
-  },
+  }
 }
 
-export default chat
+export default Chat

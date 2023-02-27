@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/no-unused-vars: 0 */
-import type { RegexDic } from '@/dictionary/types'
+import type { RegexDic } from '@/core'
 
 /**
  * @link https://minecraft-ja.gamepedia.com/%E4%BD%93%E5%8A%9B#.E6.AD.BB.E4.BA.A1.E3.83.A1.E3.83.83.E3.82.BB.E3.83.BC.E3.82.B8
@@ -105,19 +105,19 @@ const death: RegexDic = {
     ja: (message, player) => `${player} はツタから滑り落ちた`,
   },
   falling6: {
-    pattern: /^([^\s]+) fell off some weeping vines‌$/,
+    pattern: /^([^\s]+) fell off some weeping vines$/,
     ja: (message, player) => `${player} は枝垂れツタから滑り落ちた`,
   },
   falling7: {
-    pattern: /^([^\s]+) fell off some twisting vines‌$/,
+    pattern: /^([^\s]+) fell off some twisting vines$/,
     ja: (message, player) => `${player} はねじれツタから滑り落ちた`,
   },
   falling8: {
-    pattern: /^([^\s]+) fell off a scaffolding‌$/,
+    pattern: /^([^\s]+) fell off a scaffolding$/,
     ja: (message, player) => `${player} は足場から落ちた`,
   },
   falling9: {
-    pattern: /^([^\s]+) fell while climbing‌$/,
+    pattern: /^([^\s]+) fell while climbing$/,
     ja: (message, player) => `${player} は登る途中で落ちた`,
   },
   fellOut10: {

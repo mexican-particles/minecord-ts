@@ -1,18 +1,21 @@
-import type { Plugin } from '@/plugin/types'
+import { AbstractPlugin, toDiscordEvent, toMinecraftEvent } from '@/core'
 
-const ping: Plugin = {
-  async discord({ message, sendToDiscord, sendToMinecraft }): Promise<void> {
-    if (message.cleanContent !== '!ping') {
+class Ping extends AbstractPlugin {
+  async discord(e: toDiscordEvent): Promise<void> {
+    if (e.message.cleanContent !== '!ping') {
       return
     }
-    await sendToDiscord({ content: 'pong, from minecord' }, {})
-    const result = await sendToMinecraft('time query gametime')
+    await e.sendToDiscord('pong, from minecord')
+    const result = await e.sendToMinecraft('time query gametime')
     if (/^The time is \w+$/.test(result)) {
-      await sendToDiscord({ content: 'pong, from minecraft' }, {})
+      await e.sendToDiscord('pong, from minecraft')
       return
     }
-    await sendToDiscord({ content: 'マインクラフトと接続できていないかも？' }, {})
-  },
+    await e.sendToDiscord('May not be connected to Minecraft.')
+  }
+
+  async minecraft(_e: toMinecraftEvent): Promise<void> {
+  }
 }
 
-export default ping
+export default Ping

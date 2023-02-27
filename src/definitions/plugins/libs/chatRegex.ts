@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/no-unused-vars: 0 */
-import type { RegexDic } from '@/dictionary/types'
+import type { RegexDic } from '@/core'
 
 export const chatRegexRepDic: RegexDic = {
   angleBrackets: {

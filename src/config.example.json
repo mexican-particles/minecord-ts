@@ -7,8 +7,9 @@
   "minecraftLog": "/var/minecraft/logs/latest.log",
   "minecraftRconHost": "localhost",
   "minecraftRconPort": 25575,
-  "minecraftRconPassword": "secret",
+  "minecraftRconPassword": "minecraft",
   "discordBotToken": "",
   "discordChannel": "",
-  "encode": "utf-8"
+  "encode": "utf-8",
+  "logLevel": "info"
 }

@@ -1,4 +1,4 @@
-import type { RegexDic } from '@/dictionary/types'
+import type { RegexDic } from '@/core'
 
 const server: RegexDic = {
   stopping: {

@@ -1,4 +1,6 @@
-import { cmdRegex } from '@/definitions/plugins/libs/cmdRegex'
+import consola from 'consola'
+import { cmdRegex } from './cmdRegex'
+import { info } from '@/core'
 
 export const cmdInvoker = async <T>(
   command: string,
@@ -15,10 +17,10 @@ export const cmdInvoker = async <T>(
     if (!cmdRegex[key].test(command.trim())) {
       continue
     }
-    console.log(`コマンド ${command} を実行します`)
+    info(`Execute command: ${command}`)
     await invoker(command.slice(1).trim())
     return
   }
 
-  console.log(`コマンド ${command} は実行可能リストに定義されていません`)
+  consola.info(`Command: ${command} is not defined in the executable list.`)
 }
